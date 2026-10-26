@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Date #1</title>
+</head>
+<body>
+<script>
+(async () => {
+    const path = window.location.pathname;
+
+    // Если это настоящий 404-файл, а не случайный slug
+    if (path === "/" || path === "/404.html") {
+        window.location.replace("/");
+        return;
+    }
+
+    try {
+        // Загружаем основную страницу GitHub Pages
+        const response = await fetch("/");
+
+        if (!response.ok) {
+            throw new Error("Не удалось загрузить страницу");
+        }
+
+        const html = await response.text();
+
+        // Подменяем содержимое текущей 404-страницы
+        // URL /jue8nei9d3s при этом остаётся
+        document.open();
+        document.write(html);
+        document.close();
+
+    } catch (error) {
+        document.body.innerHTML = `
+            <div style="
+                font-family:Arial;
+                text-align:center;
+                padding:50px;
+            ">
+                <h2>Страница временно недоступна</h2>
+            </div>
+        `;
+    }
+})();
+</script>
+</body>
+</html>
